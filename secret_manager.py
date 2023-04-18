@@ -100,8 +100,13 @@ class SecretManager:
 
     def set_key(self, b64_key:str)->None:
         # If the key is valid, set the self._key var for decrypting
+        test_key = base64.b64decode(b64_key)
+        if self.check_key(test_key):
+            self._key = test_key
+            self._log.info("Cle correct")
+        else : 
+            raise ValueError("Cle incorrect")
         
-
     def get_hex_token(self)->str:
         # Should return a string composed of hex symbole, regarding the token
         raise NotImplemented()
