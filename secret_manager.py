@@ -80,15 +80,27 @@ class SecretManager:
 
     def load(self)->None:
         # function to load crypto data
-        raise NotImplemented()
+        salt_path = os.path.join(self._path,"salt.bin")
+        token_path = os.path.join(self._path,"token.bin")
+
+        if os.path.exists(salt_path) and os.path.exists(token_path):
+            with open(salt_path, "rb") as salt_v:
+                self._salt=salt_v.read()
+            with open(token_path, "rb") as token_v:
+                self._token=token_v.read()
+        else : 
+            self._log.info("Absence de donnees de chiffrement")
+        
 
     def check_key(self, candidate_key:bytes)->bool:
         # Assert the key is valid
-        raise NotImplemented()
+        token = self.do_derivation(self._salt, candidate_key)
+        return token == self._token
+    
 
     def set_key(self, b64_key:str)->None:
         # If the key is valid, set the self._key var for decrypting
-        raise NotImplemented()
+        
 
     def get_hex_token(self)->str:
         # Should return a string composed of hex symbole, regarding the token
