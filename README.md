@@ -7,3 +7,5 @@
 
 ## Question 3 : On vérifie si il y a un token pour éviter de l'effacer, ce qui peut entraîner des erreurs d'authentification
 
+## Question 4 : On prend la clé envoyée, et on la dérive avec le sel de la même facon qu'on l'a fait pour le token. Si le token correspond à celui stocké dans token.bin, alors on a la bonne cle.
+
