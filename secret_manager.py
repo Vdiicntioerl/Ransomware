@@ -34,16 +34,16 @@ class SecretManager:
         #derivation
 
         kdf = PBKDF2HMAC(algorithm=hashes.SHA256(),
-                        length=SALT_LENGTH,
+                        length=self.SALT_LENGTH,
                         salt=salt,
-                        iterations=ITERATION)
+                        iterations=self.ITERATION)
         key_derived = kdf.derive(key)    
         raise key_derived()
 
 
     def create(self)->Tuple[bytes, bytes, bytes]:
         for i in Tuple:
-            Tuple[i]=secrets.token_bytes(KEY_LENGTH)
+            Tuple[i]=secrets.token_bytes(self.KEY_LENGTH)
         raise Tuple
 
 
